@@ -1,0 +1,59 @@
+﻿@page "/"
+
+@using System.IO
+
+<header id="showcase">
+    <h1>@quote</h1>
+    <p>@author</p>
+</header>
+<section id="section-a">
+    <p>
+        This site was built to help but a smile on your face, make you stop and to get you to think a little or a lot.  That it’s only purpose.  Both the picture and the quote are randomly generated and put together.  It should make some interesting  combinations.
+        If you like it, share it.
+    </p>
+</section>
+
+@code{
+
+    string quote = "Loading....";
+    string author = "";
+
+    List<Quote> quotes = new List<Quote>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!quotes.Any())
+            {
+                var data = LoadTextFile();
+                if (!string.IsNullOrEmpty(data))
+                {
+                    quotes = System.Text.Json.JsonSerializer.Deserialize<List<Quote>>(data);
+                }
+            }
+            var q = await QuoteService.Get(quotes);
+            quote = q.text;
+            author = q.author;
+        }
+        StateHasChanged();
+    }
+
+    static private string LoadTextFile()
+    {
+        string result = string.Empty;
+        //make sure the file exists
+        if (File.Exists("wwwroot/data/quote2.json"))
+        {
+            try
+            {
+                result = File.ReadAllText("wwwroot/data/quote2.json");
+            }
+            catch
+            {
+
+            }
+        }
+        return result;
+    }
+}

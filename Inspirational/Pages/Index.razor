@@ -1,0 +1,33 @@
+﻿@page "/"
+
+@inject HttpClient Http
+
+<header id="showcase">
+    <h1>@quote</h1>
+    <p>@author</p>
+</header>
+<section id="section-a">
+    <p>
+        This site was built to help but a smile on your face, make you stop and to get you to think a little or a lot.  That it’s only purpose.  Both the picture and the quote are randomly generated and put together.  It should make some interesting  combinations.
+        If you like it, share it.
+    </p>
+</section>
+
+@code{
+
+    string quote = "Loading....";
+    string author = "";
+
+    List<Quote> quotes = new List<Quote>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!quotes.Any())
+        {
+            quotes = await Http.GetFromJsonAsync<List<Quote>>("sample-data/quote2.json");
+        }
+        var q = await Quote.Get(quotes);
+        quote = q.Text;
+        author = q.Author;
+    }
+}
