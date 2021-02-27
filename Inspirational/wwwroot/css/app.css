@@ -14,6 +14,7 @@ body {
 #showcase {
     background-image: url('https://source.unsplash.com/random');
     background-size: cover;
+    opacity: 0.9;
     background-position: center;
     height: 100vh;
     display: flex;
@@ -110,5 +111,10 @@ body {
     .main .top-row a, .main .top-row .btn-link {
         margin-left: 0;
     }
+}
+
+.textHighlight {
+    background-color: blue;
+    color: white;
 }
 
